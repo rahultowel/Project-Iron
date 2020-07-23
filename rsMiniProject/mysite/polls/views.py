@@ -15,27 +15,38 @@ class IndexView(generic.ListView):
     def get_queryset(self):
         return Question.objects.filter(pub_date__lte=timezone.now()).order_by('-pub_date')
 
-"""class DetailView(generic.DetailView):
-    template_name='polls/detail.html'
-    context_object_name='the_question'
-    model=Question   """
 
 class DetailView(View):
     form_class=comForm
     template_name='polls/detail.html'
+
     def get(self,request,question_id,*args,**kwargs):
+
         template_name=self.template_name
         the_question= get_object_or_404(Question,id=question_id)
+        comment_list=the_question.comment_set.all().order_by('-pub_date')
         form=self.form_class()
-        context={'the_question':the_question,'form':form}
+        context={'the_question':the_question,
+        'form':form,'comment_list':comment_list}
+
         return render(request,template_name,context)
+
     def post(self,request,question_id,*args,**kwargs):
+
         template_name=self.template_name
+        the_question= get_object_or_404(Question,id=question_id)
+        comment_list=the_question.comment_set.all().order_by('-pub_date')
         form=self.form_class(request.POST)
+        context={'the_question':the_question,
+        'form':form,'comment_list':comment_list}
+
         if form.is_valid():
             #process data here
+            this_comment=form.cleaned_data['this_comment']
+            comment=Comment(question=the_question,comment_text=this_comment)
+            comment.save()
             return HttpResponseRedirect(request.path_info)
-        return render(request,template_name, {'form':form})
+        return render(request,template_name, context)
 
 class ResultsView(generic.DetailView):
     model=Question

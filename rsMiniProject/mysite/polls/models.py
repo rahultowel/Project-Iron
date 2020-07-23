@@ -26,3 +26,7 @@ class Choice(models.Model):
 class Comment(models.Model):
     question=models.ForeignKey(Question, on_delete=models.CASCADE)
     comment_text=models.TextField()
+    pub_date=models.DateTimeField('date published',default=timezone.now)
+
+    def __str__(self):
+        return self.comment_text[:10]

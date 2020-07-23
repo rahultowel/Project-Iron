@@ -20,18 +20,26 @@
 
   </form>
   <br>
-  <p>Comments</p>
-  {% for comment in the_question.comment_set.all %}
-  <div class="Container">
-    <p> >> {{comment.comment_text}}</p>
-  </div>
-  {% endfor %}
+
 
   <form method="post" action="">
     {% csrf_token %}
     {{form|crispy}}
     <br>
-    <input type="submit" name="thisComment" value="Comment" class="btn btn-secondary">
+    <input type="submit" value="Submit" class="btn btn-secondary">
 
   </form>
+  <br>
+  <p>Comments</p>
+  {% for comment in comment_list %}
+  <div class="media ">
+    <div class="media-body">
+      <div class="well">
+        <h6 class="mt-0">Anonymous ({{comment.pub_date}})</h6>
+        {{comment.comment_text}}
+      </div>
+  </div>
+  </div>
+  <br>
+  {% endfor %}
 {% endblock content %}
