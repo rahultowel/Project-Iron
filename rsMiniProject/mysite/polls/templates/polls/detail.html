@@ -1,8 +1,10 @@
 {% extends "polls/base.html" %}
+{% load crispy_forms_tags %}
 {% block content %}
   <h3>These are the poll's detail</h3>
   <br>
   <h4>{{the_question.question_text}}</h4>
+  <p class="text-left text-muted">{{the_question.description}}</p>
   {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
   <form action="{% url 'polls:vote' the_question.id %}" method="post">
   {% csrf_token %}
@@ -15,5 +17,21 @@
   {% endfor %}
   <br>
   <input type="submit" value="Vote" class="btn btn-primary">
+
+  </form>
+  <br>
+  <p>Comments</p>
+  {% for comment in the_question.comment_set.all %}
+  <div class="Container">
+    <p> >> {{comment.comment_text}}</p>
+  </div>
+  {% endfor %}
+
+  <form method="post" action="">
+    {% csrf_token %}
+    {{form|crispy}}
+    <br>
+    <input type="submit" name="thisComment" value="Comment" class="btn btn-secondary">
+
   </form>
 {% endblock content %}

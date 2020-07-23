@@ -5,7 +5,7 @@
 
   <ul>
     {% for choice in the_question.choice_set.all %}
-    <p>{{choice.choice_text}} = {{choice.votes}}</p>
+    <p>{{choice.choice_text}} : {{choice.votes}}</p>
     {% endfor %}
   </ul>
 
