@@ -1,9 +1,8 @@
 {% extends "polls/base.html" %}
 {% load crispy_forms_tags %}
+
 {% block content %}
-  <h3>These are the poll's detail</h3>
-  <br>
-  <h4>{{the_question.question_text}}</h4>
+  <p class="lead">{{the_question.question_text}}</p>
   <p class="text-left text-muted">{{the_question.description}}</p>
   {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
   <form action="{% url 'polls:vote' the_question.id %}" method="post">
@@ -30,7 +29,10 @@
 
   </form>
   <br>
-  <p>Comments</p>
+
+  <div class="border-top pt-3">
+    <p>Comments</p>
+  </div>
   {% for comment in comment_list %}
   <div class="media ">
     <div class="media-body">

@@ -1,12 +1,21 @@
 {% extends "polls/base.html" %}
 {% block content %}
-  <h2>These are the polls</h2>
+  <p class="lead pl-3">Public Polls</p>
   {% if latest_question_list %}
-    <ul>
+  <div class="container ">
+    <ul class="list-group">
       {% for question in latest_question_list %}
-        <li><a href="{% url 'polls:detail' question.id %}">{{question.question_text}}</a></li>
+      <li class=" list-group-item d-flex justify-content-between align-items-center">
+        <a class="text-dark" href="{% url 'polls:detail' question.id %}">{{question.question_text}}</a>
+        <span class="badge badge-info ">
+          {% for choice in question.choice_set.all %}
+            +{{choice.votes}}
+          {% endfor %}
+        </span>
+      </li>
       {% endfor %}
     </ul>
+  </div>
   {% else %}
    <p>No polls available</p>
   {% endif %}
