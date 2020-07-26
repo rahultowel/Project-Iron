@@ -1,0 +1,42 @@
+{% extends "polls/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+  <p>
+    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+      Create a new poll
+    </button>
+  </p>
+  <div class="collapse" id="collapseExample">
+    <div class="card card-body">
+      <form method="post" action="">
+        {% csrf_token %}
+        {{form|crispy}}
+        <br>
+        <input type="submit" value="Post" class="btn btn-success">
+
+      </form>
+    </div>
+  </div>
+  <p></p>
+  <p class="display-4">My Polls</p>
+
+  {% if user.question_set.all %}
+  <div class="container ">
+    <ul class="list-group">
+      {% for question in user.question_set.all %}
+      <li class=" list-group-item d-flex justify-content-between align-items-center">
+        <a class="text-dark" href="{% url 'polls:detail' question.id %}">{{question.question_text}}</a>
+        <span class="badge badge-info ">
+          {% for choice in question.choice_set.all %}
+            +{{choice.votes}}
+          {% endfor %}
+        </span>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% else %}
+   <p>No polls available</p>
+  {% endif %}
+{% endblock content %}

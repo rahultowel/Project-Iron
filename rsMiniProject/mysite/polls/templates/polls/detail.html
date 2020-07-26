@@ -2,8 +2,12 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-  <p class="lead">{{the_question.question_text}}</p>
+  <p class="display-4">{{the_question.question_text}}</p>
   <p class="text-left text-muted">{{the_question.description}}</p>
+  <span class="badge badge-info">
+  Posted on {{the_question.pub_date}} by {{the_question.user}}
+  </span>
+  <p></p>
   {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
   <form action="{% url 'polls:vote' the_question.id %}" method="post">
   {% csrf_token %}
@@ -37,7 +41,7 @@
   <div class="media ">
     <div class="media-body">
       <div class="well">
-        <h6 class="mt-0">Anonymous ({{comment.pub_date}})</h6>
+        <h6 class="mt-0">{{comment.user}} ({{comment.pub_date}})</h6>
         {{comment.comment_text}}
       </div>
   </div>

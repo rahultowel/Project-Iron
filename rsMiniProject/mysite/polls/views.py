@@ -7,6 +7,7 @@ from django.utils import timezone
 from django.views.generic import FormView
 from django.views.generic.detail import SingleObjectMixin
 from .forms import comForm
+from django.contrib import messages
 
 class IndexView(generic.ListView):
     template_name = 'polls/index.html'
@@ -43,7 +44,7 @@ class DetailView(View):
         if form.is_valid():
             #process data here
             this_comment=form.cleaned_data['this_comment']
-            comment=Comment(question=the_question,comment_text=this_comment)
+            comment=Comment(user=request.user,question=the_question,comment_text=this_comment)
             comment.save()
             return HttpResponseRedirect(request.path_info)
         return render(request,template_name, context)
@@ -78,4 +79,5 @@ def vote(request,question_id):
     else:
         selected_choice.votes += 1
         selected_choice.save()
+        messages.add_message(request,messages.SUCCESS,'Vote added')
         return HttpResponseRedirect(reverse('polls:results',args=(the_question.id,)))

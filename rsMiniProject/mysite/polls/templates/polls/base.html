@@ -21,7 +21,7 @@
 
     <div class="jumbotron">
       <div class="container">
-        <h1 class="display-4">Poll app this is</h1>
+        <h1 class="display-3">Poll app this is</h1>
         <p class="lead">For all your polling needs, quick and easy!</p>
       </div>
     </div>
@@ -48,14 +48,26 @@
               <div class="container-fluid">
                 <nav class="nav nav-pills flex-column flex-sm-col">
                   <li class="nav-item" >
-                    <a class="flex-sm-fill text-sm-left bg-light text-dark nav-link" href="{% url 'polls:index' %}"> Polls</a>
+                    <a class="flex-sm-fill text-sm-left bg-light text-dark nav-link" href="{% url 'polls:index' %}"> Public Polls</a>
                   </li>
-                  <li class="nav-item">
-                    <a class="flex-sm-fill text-sm-left bg-light text-dark nav-link "  href="{% url 'register' %}">Register</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="flex-sm-fill text-sm-left bg-light text-dark nav-link "  href="{% url 'register' %}">Sign In</a>
-                  </li>
+                  {% if user.is_authenticated %}
+                    <li class="nav-item" >
+                      <a class="flex-sm-fill text-sm-left bg-light text-dark nav-link" href="{% url 'users:mypolls' user.get_username %}"> My Polls</a>
+                    </li>
+                    <li class="nav-item" >
+                      <a class="flex-sm-fill text-sm-left bg-light text-dark nav-link" href="{% url 'users:profile' user.get_username %}"> My Profile</a>
+                    </li>
+                    <li class="nav-item" >
+                      <a class="flex-sm-fill text-sm-left bg-light text-dark nav-link" href="{% url 'logout' %}"> Log Out</a>
+                    </li>
+                  {% else %}
+                    <li class="nav-item">
+                      <a class="flex-sm-fill text-sm-left bg-light text-dark nav-link "  href="{% url 'register' %}">Register</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="flex-sm-fill text-sm-left bg-light text-dark nav-link "  href="{% url 'login' %}">Sign In</a>
+                    </li>
+                  {% endif %}
                 </nav>
               </div>
             </div>

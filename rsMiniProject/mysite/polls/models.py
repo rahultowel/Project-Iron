@@ -1,9 +1,10 @@
 import datetime
-
+from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 
 class Question(models.Model):
+    user=models.ForeignKey(User,on_delete=models.CASCADE, default=int(1))
     question_text=models.CharField(max_length=200)
     description=models.TextField(default='No description')
     pub_date = models.DateTimeField('date published',default=timezone.now)
@@ -24,6 +25,7 @@ class Choice(models.Model):
         return self.choice_text
 
 class Comment(models.Model):
+    user=models.ForeignKey(User,on_delete=models.CASCADE, default=int(1))
     question=models.ForeignKey(Question, on_delete=models.CASCADE)
     comment_text=models.TextField()
     pub_date=models.DateTimeField('date published',default=timezone.now)
