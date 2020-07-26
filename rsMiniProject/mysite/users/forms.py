@@ -11,5 +11,6 @@ class UserRegisterForm(UserCreationForm):
 
 class newQuestionForm(forms.Form):
     question_text=forms.CharField(label='New Question', max_length=200)
+    description=forms.CharField(label='Description',widget=forms.Textarea(), required=False)
     choice1=forms.CharField(label='Choice 1',max_length=200)
     choice2=forms.CharField(label='Choice 2', max_length=200)

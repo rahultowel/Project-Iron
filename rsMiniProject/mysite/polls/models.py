@@ -1,5 +1,6 @@
 import datetime
 from django.contrib.auth.models import User
+from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.utils import timezone
 
@@ -8,6 +9,7 @@ class Question(models.Model):
     question_text=models.CharField(max_length=200)
     description=models.TextField(default='No description')
     pub_date = models.DateTimeField('date published',default=timezone.now)
+    voters= ArrayField(models.IntegerField(blank=True))
 
     def __str__(self):
         return self.question_text

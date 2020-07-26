@@ -1,6 +1,6 @@
 {% extends "polls/base.html" %}
 {% load crispy_forms_tags %}
-
+{% load alreadyVoted %}
 {% block content %}
   <p class="display-4">{{the_question.question_text}}</p>
   <p class="text-left text-muted">{{the_question.description}}</p>
@@ -19,8 +19,17 @@
   </div>
   {% endfor %}
   <br>
-  <input type="submit" value="Vote" class="btn btn-primary">
-
+  {% if user.is_authenticated %}
+    {% if the_question.id|alreadyVoted:user.id %}
+      <input type="submit" value="Vote" class="btn btn-primary">
+    {% else %}
+      <p class="text-sm text-muted font-italic">You have already voted on this poll. View <a href="{% url 'polls:results' the_question.id  %}">results</a>?
+      </p>
+    {% endif %}
+  {% else %}
+    <p class="text-sm text-muted font-italic">You must be logged in to vote. View <a href="{% url 'polls:results' the_question.id  %}">results</a>?
+    </p>
+  {% endif %}
   </form>
   <br>
 

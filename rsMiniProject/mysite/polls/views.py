@@ -49,6 +49,7 @@ class DetailView(View):
             return HttpResponseRedirect(request.path_info)
         return render(request,template_name, context)
 
+
 class ResultsView(generic.DetailView):
     model=Question
     template_name='polls/results.html'
@@ -78,6 +79,8 @@ def vote(request,question_id):
         'error_message':"You didn't select a choice."})
     else:
         selected_choice.votes += 1
+        the_question.voters.append(request.user.id)
+        the_question.save()
         selected_choice.save()
         messages.add_message(request,messages.SUCCESS,'Vote added')
         return HttpResponseRedirect(reverse('polls:results',args=(the_question.id,)))

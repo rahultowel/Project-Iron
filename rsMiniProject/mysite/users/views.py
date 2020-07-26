@@ -52,7 +52,8 @@ class MyPolls(View):
             question_text=form.cleaned_data['question_text']
             choice1=form.cleaned_data['choice1']
             choice2=form.cleaned_data['choice2']
-            question=Question(user=request.user,question_text=question_text)
+            description=form.cleaned_data['description']
+            question=Question(user=request.user,question_text=question_text, description=description, voters=[])
             question.save()
             c1=Choice(question=question,choice_text=choice1)
             c2=Choice(question=question,choice_text=choice2)
