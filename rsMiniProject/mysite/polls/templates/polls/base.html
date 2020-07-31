@@ -1,4 +1,5 @@
 {% load static %}
+{% load unread %}
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
@@ -56,6 +57,15 @@
                     </li>
                     <li class="nav-item" >
                       <a class="flex-sm-fill text-sm-left bg-light text-dark nav-link" href="{% url 'users:profile' user.get_username %}"> My Profile</a>
+                    </li>
+                    <li class="nav-item" >
+                      <a class="flex-sm-fill text-sm-left bg-light text-dark nav-link" href="{% url 'users:notification' user.get_username %}"> Notifications
+                        {% if user.id|unread > 0 %}
+                          <span class="badge badge-danger ">
+                            {{user.id|unread}}
+                          </span>
+                        {% endif %}
+                      </a>
                     </li>
                     <li class="nav-item" >
                       <a class="flex-sm-fill text-sm-left bg-light text-dark nav-link" href="{% url 'logout' %}"> Log Out</a>

@@ -3,6 +3,7 @@
 {% load crispy_forms_tags %}
 {% block content %}
 
+  <p class="display-4">My Polls</p>
   <p>
     <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
       Create a new poll
@@ -20,7 +21,7 @@
     </div>
   </div>
   <p></p>
-  <p class="display-4">My Polls</p>
+
 
   {% if user.question_set.all %}
   <div class="container ">

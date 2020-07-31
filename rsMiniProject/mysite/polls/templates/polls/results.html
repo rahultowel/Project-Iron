@@ -4,7 +4,9 @@
   <p class="lead">Poll results</p>
   <ul>
     {% for choice in the_question.choice_set.all %}
-    <p>{{choice.choice_text}} : {{choice.votes}}</p>
+      {% if choice.allowed %}
+        <p>{{choice.choice_text}} : {{choice.votes}}</p>
+      {% endif %}
     {% endfor %}
   </ul>
 
