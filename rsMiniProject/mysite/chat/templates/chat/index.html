@@ -1,26 +1,51 @@
 {% extends "polls/base.html" %}
 {% block content %}
-  <div class="container">
-    <div class="row">
-      <div class="form-group">
-        <label for="room-name-input">What chat room would you like to enter?</label>
-        <input class="form-control" type="text" id="room-name-input" type="text" size="100"><br>
-        <input class="btn btn-primary" id="room-name-submit" type="button" value="Enter">
 
-        <script>
-            document.querySelector('#room-name-input').focus();
-            document.querySelector('#room-name-input').onkeyup = function(e) {
-                if (e.keyCode === 13) {  // enter, return
-                    document.querySelector('#room-name-submit').click();
-                }
-            };
+  <script type = "text/javascript">
 
-            document.querySelector('#room-name-submit').onclick = function(e) {
-                var roomName = document.querySelector('#room-name-input').value;
-                window.location.pathname = '/chat/' + roomName + '/';
-            };
-        </script>
-      </div>
-    </div>
+     var timer=setInterval(WebSocketTest,10000);
+     function WebSocketTest() {
+
+        if ("WebSocket" in window) {
+           // Let us open a web socket
+           var ws = new WebSocket("ws://localhost:8000/ws/testData/");
+
+           ws.onopen = function() {
+             // Web Socket is connected, send data using send()
+                    //ws.send("Message to send");
+                    ws.send(document.getElementById("demo").value);
+                 };
+
+           ws.onmessage = function (evt) {
+              var received_msg = evt.data;
+              //alert(received_msg);
+              document.getElementById("demo").value=received_msg;
+           };
+
+           ws.onclose = function() {
+
+              // websocket is closed.
+              //alert("Connection is closed...");
+           };
+        }
+        else {
+           // The browser doesn't support WebSocket
+           alert("WebSocket NOT supported by your Browser!");
+        }
+     }
+
+   function WebSocketClose(){
+
+     }
+  </script>
+  <div id="sse">
+    <!--<a href = "javascript:WebSocketTest()">Run WebSocket</a> -->
+    <!-- <p id="demo">message here.</p> -->
+    <input id="demo" class="form-control" type="text" name="textbox" >
   </div>
+
+  <div class="" contenteditable="true" id="edit">
+    this is editable
+  </div>
+
 {% endblock content %}

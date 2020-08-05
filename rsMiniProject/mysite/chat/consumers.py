@@ -1,4 +1,5 @@
 import json
+from channels.consumer import SyncConsumer
 from channels.generic.websocket import WebsocketConsumer,AsyncWebsocketConsumer
 from asgiref.sync import async_to_sync
 
@@ -44,3 +45,30 @@ class ChatConsumer(WebsocketConsumer):
         self.send(text_data=json.dumps({
             'message': message
         }))
+class TestConsumer(AsyncWebsocketConsumer):
+    groupname='dashboard'
+    async def connect(self):
+        await self.channel_layer.group_add(
+            self.groupname,
+            self.channel_name,
+        )
+        await self.accept()
+
+    async def disconnect(self, close_code):
+        pass
+        #await self.disconnect()
+
+    async def receive(self,text_data):
+        val=text_data
+        await self.channel_layer.group_send(
+            self.groupname,
+            {
+                'type': 'doesSom',
+                'value': val,
+            }
+        )
+        print('>>', text_data)
+
+    async def doesSom(self,event):
+        valOther=event['value'] #from receive function
+        await self.send(text_data=valOther)
